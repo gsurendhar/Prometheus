@@ -16,30 +16,30 @@ This guide provides step-by-step instructions to install Prometheus version on a
 sudo su -
 ```
 
-* 2. Navigate to the /opt directory
+# 2. Navigate to the /opt directory
 
 ```
 cd /opt/
 ```
 
-* 3. Download Prometheus
+# 3. Download Prometheus
 
 ```
 wget https://github.com/prometheus/prometheus/releases/download/v3.6.0-rc.0/prometheus-3.6.0-rc.0.linux-amd64.tar.gz
 ```
 
-* 4. Extract the archive
+# 4. Extract the archive
 
 ```
 tar -xf prometheus-3.6.0-rc.0.linux-amd64.tar.gz
 ```
-5. Rename the extracted folder
+# 5. Rename the extracted folder
 
 ```
 mv prometheus-3.6.0-rc.0.linux-amd64.tar.gz prometheus
 ```
 
-6. Create a systemd service file for Prometheus
+# 6. Create a systemd service file for Prometheus
 
 ```
 vim /etc/systemd/system/prometheus.service
@@ -60,7 +60,7 @@ ExecStart=/opt/prometheus/prometheus  --config.file=/opt/prometheus/prometheus.y
 WantedBy=multi-user.target
 ```
 
-7. Reload systemd and restart Prometheus
+# 7. Reload systemd and restart Prometheus
 
 ```
 systemctl daemon-reload
@@ -69,7 +69,7 @@ systemctl daemon-reload
 systemctl restart prometheus
 ```
 
-8. Verify Prometheus is running
+# 8. Verify Prometheus is running
 
 ```
 netstat -lntp
@@ -78,4 +78,4 @@ Look for Prometheus listening on port 9090.
 * Access Prometheus
 
 Open your browser and navigate to:
-http://<your-server-ip>:9090
+http://<your-server-public-ip>:9090
