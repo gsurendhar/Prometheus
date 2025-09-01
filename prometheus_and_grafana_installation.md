@@ -80,7 +80,7 @@ Look for Prometheus listening on port 9090.
 
 Open your browser and navigate to:
 http://your-server-public-ip:9090
-
+##
 
 
 
@@ -156,4 +156,86 @@ http://your-server-public-ip:3000
 
 ### 8. Login to Grafana 
 * By using username : `admin` and password : `admin`
+##
 
+
+
+# Prometheus Node Exporter Installation Guide
+
+This guide provides step-by-step instructions to install node_exporter  on a Linux system.
+
+## Steps
+
+### 1. Switch to the root user
+
+```
+sudo su -
+```
+
+### 2. Navigate to the /opt directory
+
+```
+cd /opt/
+```
+
+### 3. Download node_exporter
+
+```
+wget https://github.com/prometheus/node_exporter/releases/download/v1.9.1/node_exporter-1.9.1.linux-amd64.tar.gz
+```
+
+### 4. Extract the archive
+
+```
+tar -xf node_exporter-1.9.1.linux-amd64.tar.gz
+```
+### 5. Rename the extracted folder
+
+```
+mv node_exporter-1.9.1.linux-amd64.tar.gz node_exporter
+```
+
+### 6. Create a systemd service file for node_exporter
+
+```
+vim /etc/systemd/system/node_exporter.service
+```
+
+* Add the following content to the file:
+
+```
+[Unit]
+Description=Node Exporter
+After=network.target
+
+[Service]
+Restart=on-failure
+ExecStart=/opt/node_exporter/node_exporter
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### 7. Reload systemd and restart node_exporter
+
+```
+systemctl daemon-reload
+```
+```
+systemctl restart node_exporter
+```
+
+### 8. Verify node_exporter is running
+
+```
+netstat -lntp
+```
+Look for node_exporter listening on port 9100.
+
+* To get metrics from node to Prometheus, we need to add `scrape_configs` in `promethues.yml` file
+* example Config File
+```
+
+```
+
+##
