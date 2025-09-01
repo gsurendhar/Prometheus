@@ -235,7 +235,118 @@ Look for node_exporter listening on port 9100.
 * To get metrics from node to Prometheus, we need to add `scrape_configs` in `promethues.yml` file
 * example Config File
 ```
+scrape_configs:
+# scraping for prometheus to get metrics of prometheus       
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+        labels:
+          app: "prometheus"
+
+# scraping for node-1 to get metrics of node-1        
+  - job_name: "Node-1"
+    static_configs:
+      - targets: ["172.31.83.38:9100"]
+        labels:
+           app: "node-1"
+           name: "node-1"
+```
+
+##
+
+
+# Prometheus AlertManager Installation Guide
+
+This guide provides step-by-step instructions to install AlertManager  on a Linux system.
+
+## Steps
+
+### 1. Switch to the root user
 
 ```
+sudo su -
+```
+
+### 2. Navigate to the /opt directory
+
+```
+cd /opt/
+```
+
+### 3. Download node_exporter
+
+```
+wget https://github.com/prometheus/alertmanager/releases/download/v0.28.1/alertmanager-0.28.1.linux-amd64.tar.gz
+```
+
+### 4. Extract the archive
+
+```
+tar -xf alertmanager-0.28.1.linux-amd64.tar.gz
+```
+### 5. Rename the extracted folder
+
+```
+mv alertmanager-0.28.1.linux-amd64.tar.gz alertmanager
+```
+
+### 6. Create a systemd service file for alert manager
+
+```
+vim /etc/systemd/system/alertmanager.service
+```
+
+* Add the following content to the file:
+
+```
+[Unit]
+Description=Alert Manager
+After=network.target
+
+[Service]
+Restart=on-failure
+ExecStart=/opt/alertmanager/alertmanager  --config.file=/opt/alertmanager/alertmanager.yml
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### 7. Reload systemd and restart node_exporter
+
+```
+systemctl daemon-reload
+```
+```
+systemctl restart alertmanager
+```
+
+### 8. Verify alertmanager is running
+
+```
+netstat -lntp
+```
+Look for alertmanager listening on port 9093.
+
+* To get Alerts from  Prometheus to AlertManager, we need to add `alerting` in `promethues.yml` file
+* example Config File
+
+```
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - "localhost:9093"
+```
+
+* Then Restart Prometheus
+
+```
+sudo systemctl restart prometheus
+```
+
+* Access AlertManager
+
+Open your browser and navigate to:
+http://your-server-public-ip:9093
 
 ##
