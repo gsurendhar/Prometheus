@@ -1,6 +1,6 @@
 # Prometheus Installation Guide
 
-This guide provides step-by-step instructions to install Prometheus version on a Linux system.
+This guide provides step-by-step instructions to install Prometheus  on a Linux system.
 
 ## Prerequisites
 
@@ -80,3 +80,80 @@ Look for Prometheus listening on port 9090.
 
 Open your browser and navigate to:
 http://your-server-public-ip:9090
+
+
+
+
+# Grafana Installation Guide
+
+This guide provides step-by-step instructions to install Grafana  on a Linux system.
+
+
+## Steps
+
+### 1. Switch to the root user
+
+```
+sudo su -
+```
+
+### 2. Import the GPG key:
+```
+wget -q -O gpg.key https://rpm.grafana.com/gpg.key
+```
+```
+sudo rpm --import gpg.key
+```
+
+### 3. Create `/etc/yum.repos.d/grafana.repo` with the following content:
+```
+vim /etc/yum.repos.d/grafana.repo
+```
+```
+[grafana]
+name=grafana
+baseurl=https://rpm.grafana.com
+repo_gpgcheck=1
+enabled=1
+gpgcheck=1
+gpgkey=https://rpm.grafana.com/gpg.key
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+```
+
+### 4. To install Grafana OSS, run the following command:
+
+```
+sudo dnf install grafana -y
+```
+
+### 5. Reload systemd and restart Grafana
+
+```
+systemctl daemon-reload
+```
+```
+systemctl start grafana-server
+```
+
+### 6. Enable Grafana systemd service
+
+```
+systemctl enable grafana-server
+```
+
+### 7. Verify Grafana is running
+
+```
+netstat -lntp
+```
+Look for Grafana listening on port 3000.
+
+* Access Grafana
+
+Open your browser and navigate to:
+"http://<your-server-public-ip>:3000"
+
+### 8. Login to Grafana 
+* By using username : `admin` and password : `admin`
+
