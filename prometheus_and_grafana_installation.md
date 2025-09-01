@@ -152,7 +152,7 @@ Look for Grafana listening on port 3000.
 * Access Grafana
 
 Open your browser and navigate to:
-"http://<your-server-public-ip>:3000"
+http://your-server-public-ip:3000
 
 ### 8. Login to Grafana 
 * By using username : `admin` and password : `admin`
