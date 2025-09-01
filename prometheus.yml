@@ -31,16 +31,27 @@ scrape_configs:
         labels:
           app: "prometheus"
 
-  - job_name: "Node-1"
+  # - job_name: "Node-1"
 
-    # metrics_path defaults to '/metrics'
-    # scheme defaults to 'http'.
+  #   # metrics_path defaults to '/metrics'
+  #   # scheme defaults to 'http'.
 
-    static_configs:
-      - targets: ["172.31.83.38:9100"]
-        # The label name is added as a label `label_name=<label_value>` to any timeseries scraped from this config.
-        labels:
-          app: "node-1"
-          name: "node-1"
+  #   static_configs:
+  #     - targets: ["172.31.83.38:9100"]
+  #       # The label name is added as a label `label_name=<label_value>` to any timeseries scraped from this config.
+  #       labels:
+  #         app: "node-1"
+  #         name: "node-1"
 
-
+  - job_name: "ec2-instance"
+    ec2_sd_configs:
+      - region: us-east-1
+        port: 9100
+        filters:
+          - name: "tag:monitoring"
+            values:["true"]
+    relabel_configs:
+      - source_labels: [__meta_ec2_tag_Name]
+        target_label: name
+      - source_labels: [__meta_ec2_tag_instance_id]
+        target_label: instance_id
