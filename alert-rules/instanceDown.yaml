@@ -1,0 +1,14 @@
+groups:
+- name: InstanceDown
+  labels:
+    team: monitoring
+  rules:
+  - alert: InstanceDown
+    expr: up < 1
+    for: 1m
+    keep_firing_for: 5m
+    labels:
+      severity: Critical
+    annotations:
+      summary: "instance {{ $labels.instance_id }} Down "
+      description: "{{ $labels.instance_id }} is down for more than 1 minute"
